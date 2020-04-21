@@ -84,7 +84,7 @@
     </nav>
     <div class="container" style="padding: 10px">
         <div class="t-c">
-            <h4><span th:text="${authority.username}"></span>, Welcome!</h4>
+            <h4><span th:text="${authority.realName}"></span> 님, Welcome!</h4>
 <!--            <br/><span th:text="${authority.realName}"></span>-->
 <!--            <span th:text="${authority.role}"></span>-->
         </div>
@@ -97,10 +97,10 @@
                     <option value="username">Username</option>
                     <option value="reportTitle">Title</option>
                     <option value="time">writeDate</option>
-                </select>
-                <div id="result">
+                </select><br/>
+                <span id="result">
                     <input type="text" name="search" id="searching" placeholder="Select"/>
-                </div>
+                </span>
                 <button type="submit" class="btn btn-info">Search</button>
             </form>
         </div>
@@ -108,25 +108,25 @@
         <div class="t-r">
             <a th:if="${authority.role} == 'ADMIN'" class="btn btn-primary" href="/report/create/notice">Notice</a>
             <div th:unless="${authority.role} == 'ADMIN'">
-                <a class="btn btn-primary" href="/report/create/daily">Daily</a>
-                <a class="btn btn-primary" href="/report/create/weekly">Weekly</a>
-                <a class="btn btn-primary" href="/report/create/monthly">Monthly</a>
-                <a class="btn btn-primary" href="/report/create/project_goal">Project Goal</a>
+                <a class="btn btn-primary" href="/report/create/daily">New<br/>Daily</a>
+                <a class="btn btn-primary" href="/report/create/weekly">New<br/>Weekly</a>
+                <a class="btn btn-primary" href="/report/create/monthly">New<br/>Monthly</a>
+                <a class="btn btn-primary" href="/report/create/project_goal">New<br/>Project Goal</a>
             </div>
         </div><br/>
-<!--        <div class="t-l">-->
-<!--            <form method="get" action="/report/sorting">-->
-<!--                <select name="Big" onchange="categoryChange(this)">-->
-<!--                    <option selected>Select1</option>-->
-<!--                    <option value="type">Type</option>-->
-<!--                    <option value="state">State</option>-->
-<!--                </select>-->
-<!--                <select name="Small" id="select2">-->
-<!--                    <option selected>Select2</option>-->
-<!--                </select>-->
-<!--                <input type="submit" value="sort"/>-->
-<!--            </form>-->
-<!--        </div>-->
+        <div class="t-l">
+            <form method="get" action="/report/sorting">
+                <select name="Big" onchange="categoryChange(this)">
+                    <option selected>Select1</option>
+                    <option value="type">Type</option>
+                    <option value="state">State</option>
+                </select>
+                <select name="Small" id="select2">
+                    <option selected>Select2</option>
+                </select>
+                <input type="submit" value="sort"/>
+            </form>
+        </div>
         <table id="table" class="table table-hover t-c">
             <thead>
                 <tr>

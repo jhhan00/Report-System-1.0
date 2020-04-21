@@ -37,7 +37,7 @@
                 "<label>Expected Achievement</label>" +
                 "<input type='number' placeholder='1~100' min='1' max='100' name='achievement" + count + "'/><br/>" +
                 "<label>Description</label><br/>" +
-                "<textarea type='text' placeholder='Description about your plan' cols='30' name='comment" + count + "'></textarea>";
+                "<textarea type='text' placeholder='최대 6000자' cols='30' name='comment" + count + "'></textarea>";
             var div = document.createElement('div');
             div.id="plan" + count;
             div.innerHTML = str;
@@ -62,7 +62,7 @@
                 "<label>Achievement</label>" +
                 "<input type='number' placeholder='1~100' min='1' max='100' name='achievement" + check + "'/><br/>" +
                 "<label>Comment</label><br/>" +
-                "<textarea type='text' placeholder='comment' cols='30' name='description" + check + "'></textarea>";
+                "<textarea type='text' placeholder='최대 6000자' cols='30' name='description" + check + "'></textarea>";
             var div = document.createElement('div');
             div.id="result" + check;
             div.innerHTML = str;
@@ -126,7 +126,7 @@
                             <label>Achievement</label>
                             <input type="number" min="1" max="100" th:name="${'achieve'+i.index}" th:value="${plan.expectedAchievement}"/><br/>
                             <label>Comment</label><br/>
-                            <textarea type="text" placeholder="comment" cols="30" th:name="${'comment'+i.index}"></textarea>
+                            <textarea type="text" placeholder="최대 6000자" cols="30" th:name="${'comment'+i.index}"></textarea>
                         </div>
                     </div>
                     <div>

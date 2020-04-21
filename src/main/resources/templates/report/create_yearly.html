@@ -19,7 +19,7 @@
                 "<label>Project Name</label>" +
                 "<input type='text' class='form-control' name='project" + dscr_count + "' placeholder='project description" + dscr_count + "'/>" +
                 "<label>Description</label><br/>" +
-                "<textarea type='text' cols='30' placeholder='description' name='project_description" + dscr_count + "'></textarea>";
+                "<textarea type='text' cols='30' placeholder='최대 6000자' name='project_description" + dscr_count + "'></textarea>";
             var div = document.createElement('div');
             div.id="Description" + dscr_count;
             div.innerHTML = str;
@@ -40,7 +40,7 @@
                 "<label>Milestone</label>" +
                 "<input type='text' class='form-control' name='milestone" + milestone_count + "' placeholder='milestone" + milestone_count + "'/>" +
                 "<label>Description</label><br/>" +
-                "<textarea type='text' cols='30' placeholder='description' name='milestone_description" + milestone_count + "'></textarea>";
+                "<textarea type='text' cols='30' placeholder='최대 6000자' name='milestone_description" + milestone_count + "'></textarea>";
             var div = document.createElement('div');
             div.id = "Milestone" + milestone_count;
             div.innerHTML = str;

@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.security.Handler;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;

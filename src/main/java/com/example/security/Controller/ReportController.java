@@ -149,7 +149,14 @@ public class ReportController {
             task.setSimpleDate(nowDate);
             task.setReportType("Daily");
             task.setReportKind("Done");
-            task.setDone(request.getParameter(key));
+            //
+            System.out.println(request.getParameter(key).length());
+            String donedone = request.getParameter(key);
+            if(request.getParameter(key).length() >= 6000) {
+                donedone = donedone.substring(0,6000);
+            }
+            task.setDone(donedone);
+            //
             System.out.println(task);
             taskRepository.save(task);
         }
@@ -252,7 +259,13 @@ public class ReportController {
                 task.setRealAchievement(request.getParameter(key));
             }
             key = keys.nextElement();
-            task.setComment(request.getParameter(key));
+            //
+            System.out.println(request.getParameter(key).length());
+            String commentcommment = request.getParameter(key);
+            if(commentcommment.length() >= 6000)
+                commentcommment =  commentcommment.substring(0,6000);
+            task.setComment(commentcommment);
+            //
             System.out.println(task);
             taskRepository.save(task);
         }
@@ -327,7 +340,13 @@ public class ReportController {
                 task.setExpectedAchievement(request.getParameter(key));
             }
             key = keys.nextElement();
-            task.setComment(request.getParameter(key));
+            //
+            System.out.println(request.getParameter(key).length());
+            String commentcommment = request.getParameter(key);
+            if(commentcommment.length() >= 6000)
+                commentcommment =  commentcommment.substring(0,6000);
+            task.setComment(commentcommment);
+            //
             System.out.println(task);
             taskRepository.save(task);
         }
@@ -386,7 +405,13 @@ public class ReportController {
             }
             task.setProgress(request.getParameter(key));
             key = keys.nextElement();
-            task.setComment(request.getParameter(key));
+            //
+            System.out.println(request.getParameter(key).length());
+            String commentcommment = request.getParameter(key);
+            if(commentcommment.length() >= 6000)
+                commentcommment =  commentcommment.substring(0,6000);
+            task.setComment(commentcommment);
+            //
             System.out.println(task);
             taskRepository.save(task);
         }

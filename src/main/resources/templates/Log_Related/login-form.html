@@ -30,7 +30,6 @@
         <div style="padding-left: 190px">
             <div class="align-items-center card border-white w-75">
                 <div class="t-c" style="padding-top: 20px"><a href="/login"><img src="/img/pc.PNG"/></a></div>
-                <div th:if="${param.error}" th:text="${ermsg}"></div>
                 <div th:if="${param.error}" class="text-danger t-c">
                     <strong>
                         Username should be end with '@pharmcadd.com'.<br/>

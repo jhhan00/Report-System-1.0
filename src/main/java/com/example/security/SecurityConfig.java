@@ -1,5 +1,6 @@
 package com.example.security;
 
+import com.example.security.Handler.LoginFailureHandler;
 import com.example.security.Handler.TaskImplementingLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

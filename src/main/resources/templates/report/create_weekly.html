@@ -12,69 +12,107 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-           $("#plan").show();
-           $("#after").hide();
+        // var count = 0;
+        // function plan_add() {
+        //     var addedform = document.getElementById('plan_div');
+        //     var str =
+        //         "<label>Weekly_Plan</label>"+
+        //         "<input type=\"text\" name=\"plan" + count + "\"/>" +
+        //         "<label>Expected Achievement</label>" +
+        //         "<input type='number' placeholder='1~100' min='1' max='100' name='achievement" + count + "'/><br/>" +
+        //         "<label>Description</label><br/>" +
+        //         "<textarea type='text' placeholder='최대 6000자' cols='30' name='comment" + count + "'></textarea>";
+        //     var div = document.createElement('div');
+        //     div.id="plan" + count;
+        //     div.innerHTML = str;
+        //     addedform.appendChild(div);
+        //
+        //     count++; console.log(count);
+        // }
+        // function plan_delete() {
+        //     console.log(count);
+        //     if(count > 1) {
+        //         var addedDiv = document.getElementById("plan" + (--count));
+        //         document.getElementById('plan_div').removeChild(addedDiv);
+        //     }
+        // }
+        //
+        // var check = 0;
+        // function result_add() {
+        //     var addedform = document.getElementById('result_div');
+        //     var str =
+        //         "<label>Other Result</label>" +
+        //         "<input type='text' name='result" + check + "'/>" +
+        //         "<label>Achievement</label>" +
+        //         "<input type='number' placeholder='1~100' min='1' max='100' name='achievement" + check + "'/><br/>" +
+        //         "<label>Comment</label><br/>" +
+        //         "<textarea type='text' placeholder='최대 6000자' cols='30' name='description" + check + "'></textarea>";
+        //     var div = document.createElement('div');
+        //     div.id="result" + check;
+        //     div.innerHTML = str;
+        //     addedform.appendChild(div);
+        //
+        //     check++; console.log(check);
+        // }
+        // function result_delete() {
+        //     console.log(check);
+        //     if(check > 1) {
+        //         var addedDiv = document.getElementById(("result" + (--check)));
+        //         document.getElementById('result_div').removeChild(addedDiv);
+        //     }
+        // }
+        var count1 = 0;
+        var count2 = 0;
+        function week_result_add(k) {
+            var value = "";
+            if(k==1) value = "weekly_result";
+            else if(k==2) value = "another_weekly_result";
 
-           $("input[name=select]").change(function() {
-              var value = $(this).val();
-              if(value == "plan") {
-                  $("#plan").show();
-                  $("#after").hide();
-              } else if(value == "after") {
-                  $("#plan").hide();
-                  $("#after").show();
-              }
-           });
-        });
-
-        var count = 0;
-        function plan_add() {
-            var addedform = document.getElementById('plan_div');
+            var addedform = document.getElementById(value);
             var str =
-                "<label>Weekly_Plan</label>"+
-                "<input type=\"text\" name=\"plan" + count + "\"/>" +
-                "<label>Expected Achievement</label>" +
-                "<input type='number' placeholder='1~100' min='1' max='100' name='achievement" + count + "'/><br/>" +
-                "<label>Description</label><br/>" +
-                "<textarea type='text' placeholder='최대 6000자' cols='30' name='comment" + count + "'></textarea>";
+                "<label>Done</label>" +
+                "<input type='text' name='done_" + count1 + "'/>" +
+                "<label>Achievement</label>" +
+                "<input type='number' placeholder='1~100' min='1' max='100' name='achievement_" + value + count1 + "'/><br/>" +
+                "<label>Comment</label><br/>" +
+                "<textarea type='text' placeholder='최대 6000자' cols='30' name='comment_" + value + count1 + "'></textarea>";
             var div = document.createElement('div');
-            div.id="plan" + count;
+            div.id = "Added_done" + count1;
             div.innerHTML = str;
             addedform.appendChild(div);
 
-            count++; console.log(count);
+            count1++; console.log(count1);
         }
-        function plan_delete() {
-            console.log(count);
-            if(count > 1) {
-                var addedDiv = document.getElementById("plan" + (--count));
-                document.getElementById('plan_div').removeChild(addedDiv);
+        function week_result_delete(k) {
+            var value = "";
+            if(k == 1) value = "weekly_result";
+            else if(k == 2) value = "another_weekly_result";
+
+            if(count1 > 1) {
+                var addedDiv = document.getElementById("Added_done" + (--count1));
+                document.getElementById(value).removeChild(addedDiv);
             }
         }
-
-        var check = 0;
-        function result_add() {
-            var addedform = document.getElementById('result_div');
+        function next_week_add() {
+            var addedform = document.getElementById("next_week");
             var str =
-                "<label>Other Result</label>" +
-                "<input type='text' name='result" + check + "'/>" +
-                "<label>Achievement</label>" +
-                "<input type='number' placeholder='1~100' min='1' max='100' name='achievement" + check + "'/><br/>" +
-                "<label>Comment</label><br/>" +
-                "<textarea type='text' placeholder='최대 6000자' cols='30' name='description" + check + "'></textarea>";
+                "<label>Plan</label>" +
+                "<input type='text' name='plan" + count2 + "' />" +
+                "<label>Expected Achievement</label>" +
+                "<input type='number' placeholder='1~100' min='1' max='100' name='expected_achievement" + count2 + "'/><br/>" +
+                "<label>Description</label><br/>" +
+                "<textarea type='text' placeholder='최대 6000자' cols='30' name='description" + count2 + "'></textarea>";
             var div = document.createElement('div');
-            div.id="result" + check;
+            div.id = "Added_plan" + count2;
             div.innerHTML = str;
             addedform.appendChild(div);
 
-            check++; console.log(check);
+            count2++; console.log(count2);
         }
-        function result_delete() {
-            console.log(check);
-            if(check > 1) {
-                var addedDiv = document.getElementById(("result" + (--check)));
-                document.getElementById('result_div').removeChild(addedDiv);
+        function next_week_delete() {
+            if(count2 > 1) {
+                var addedDiv = document.getElementById("Added_plan" + (--count2));
+                document.getElementById("next_week").removeChild(addedDiv);
             }
         }
     </script>
@@ -83,7 +121,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="/">Main</a>
-            <a class="navbar-brand" href="/report">Back</a>
+            <a class="navbar-brand" th:href="${oldUrl}">Back</a>
         </div>
     </nav>
     <div class="container">
@@ -95,51 +133,36 @@
             </div>
         </div>
         <hr/>
-        <h5>create weekly</h5>
+        <h5>create weekly</h5><!-- 2020.04.22 에 대대적인 변경 : 계획->결과 가 아닌 결과->계획으로 => 월간보고서와 비슷하게 -->
         <div>
-            <div>
-                <label><input type="radio" name="select" value="plan" checked="checked"> weekly_plan</label>
-                <label><input type="radio" name="select" value="after"> weekly_result</label>
-            </div>
-            <div id="plan">
-                PLAN
-                <form th:object="${task}" method="post" action="/report/create/weekly">
-                    <input type="hidden" name="planOrAfter" value="plan"/>
-                    <div>
-                        <div id="plan_div"></div>
-                        <input type="button" value="Add" onclick="plan_add()"/>
-                        <input type="button" value="Delete" onclick="plan_delete()"/>
-                    </div><br/>
-                    <div th:if="${Valid} == false">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+            <label>This Week</label>
+            <form th:object="${task}" method="post" action="/report/create/weekly">
+                <div th:if="${Valid} == true">
+                    <div id="weekly_result"></div>
+                    <input type="button" value="Add" onclick="week_result_add(1)"/>
+                    <input type="button" value="Delete" onclick="week_result_delete(1)"/>
+                </div>
+                <div th:unless="${Valid} == true">
+                    <div th:each="done, i:${task}" th:unless="${done.progress} == null">
+                        <label>Done</label>
+                        <input type="text" th:name="${'done'+i.index}" th:value="${done.progress}" readonly/>
+                        <label>Achievement</label>
+                        <input type="number" placeholder="1~100" max="100" min="1" th:name="${'achievement'+i.index}" th:value="${done.expectedAchievement}"/><br/>
+                        <label>Comment</label><br/>
+                        <textarea type="text" cols="30" placeholder="최대 6000자" th:name="${'comment'+i.index}"></textarea>
                     </div>
-                </form>
-            </div>
-            <div id="after">
-                After
-                <form th:object="${task}" method="post" action="/report/create/weekly">
-                    <input type="hidden" name="planOrAfter" value="after"/>
-                    <div th:each="plan, i:${task}">
-                        <div th:unless="${plan.progress} == null">
-                            <label>Progress</label>
-                            <input type="text" th:name="${'plan'+i.index}" th:value="${plan.progress}" readonly>
-                            <label>Achievement</label>
-                            <input type="number" min="1" max="100" th:name="${'achieve'+i.index}" th:value="${plan.expectedAchievement}"/><br/>
-                            <label>Comment</label><br/>
-                            <textarea type="text" placeholder="최대 6000자" cols="30" th:name="${'comment'+i.index}"></textarea>
-                        </div>
-                    </div>
-                    <div>
-                        <div id="result_div"></div>
-                        <input type="button" value="Add" onclick="result_add()"/>
-                        <input type="button" value="Delete" onclick="result_delete()"/>
-                    </div>
-                    <br/>
-                    <div th:if="${Valid} == true">
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
+                    <div id="another_weekly_result"></div>
+                    <input type="button" value="Add" onclick="week_result_add(2)"/>
+                    <input type="button" value="Delete" onclick="week_result_delete(2)"/>
+                </div><br/>
+                <div>
+                    <label>Next Week Plan</label>
+                    <div id="next_week"></div>
+                    <input type="button" value="Add" onclick="next_week_add()"/>
+                    <input type="button" value="Delete" onclick="next_week_delete()"/>
+                </div><br/>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
         </div>
     </div>
 </body>

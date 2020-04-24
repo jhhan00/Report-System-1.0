@@ -49,7 +49,7 @@
             var addedform = document.getElementById('next_month');
             var str =
                 "<label>Plan</label>" +
-                "<input type='text' placeholder='next_month_plan" + count2 + "' name='plan" + count2 + "' />" +
+                "<input type='text' name='plan" + count2 + "' />" +
                 "<label>Expected Achievement</label>" +
                 "<input type='number' placeholder='1~100' min='1' max='100' name='expected_achievement" + count2 + "'/><br/>" +
                 "<label>Description</label><br/>" +
@@ -74,7 +74,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="/">Main</a>
-            <a class="navbar-brand" href="/report">Back</a>
+            <a class="navbar-brand" th:href="${oldUrl}">Back</a>
         </div>
     </nav>
     <div class="container">

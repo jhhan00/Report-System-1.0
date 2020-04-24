@@ -44,48 +44,38 @@
                 </div>
             </div>
             <div th:if="${info.reportType} == 'Weekly'">
-                <p><strong>이번 주 계획(This Week Plan)</strong></p>
+                <p><strong>이번 주 성과(This Week Result)</strong></p>
                 <table class="table table-striped table-bordered">
                     <thead>
-                        <tr>
-                            <th>Progress</th>
-                            <th>Expected_Achievement</th>
-                            <th>Description</th>
-                        </tr>
+                    <tr>
+                        <th>Done</th>
+                        <th>Achievement</th>
+                        <th>Description</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_plan'">
-                            <td th:text="${view.progress}" class="col-sm-4"></td>
-                            <td th:text="${view.expectedAchievement} + '%'" class="col-sm-3"></td>
-                            <td th:text="${view.comment}" class="col-sm-5"></td>
-                        </tr>
+                    <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_result'">
+                        <td class="col-sm-4" th:text="${view.done}"></td>
+                        <td class="col-sm-3" th:text="${view.realAchievement} + '%'"></td>
+                        <td class="col-sm-5" th:text="${view.comment}"></td>
+                    </tr>
                     </tbody>
-                </table>
-                <p><strong>이번주 결과(This Week Result)</strong></p>
+                </table><br/>
+                <p><strong>다음 주 계획(Next Week Plan)</strong></p>
                 <table class="table table-striped table-bordered">
                     <thead>
-                        <tr>
-                            <th>Done</th>
-                            <th>Achievement</th>
-                            <th>Description</th>
-                        </tr>
+                    <tr>
+                        <th>Progress</th>
+                        <th>Expected_Achievement</th>
+                        <th>Description</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="view, i:${list}" th:if="${view.reportKind} == 'weekly_result'">
-                            <td th:text="${view.done}" class="col-sm-4"></td>
-                            <td th:if="${view.expectedAchievement} == null" class="col-sm-3">
-                                <span th:text="${view.realAchievement}+'%'"></span>
-                            </td>
-                            <td th:unless="${view.expectedAchievement} == null" class="col-sm-3">
-                                <span class="text-green"
-                                      th:if="${view.realAchievement} > ${view.expectedAchievement}" th:text="${view.realAchievement}+'%'"></span>
-                                <span
-                                      th:if="${view.realAchievement} == ${view.expectedAchievement}" th:text="${view.realAchievement}+'%'"></span>
-                                <span class="text-red"
-                                      th:if="${view.realAchievement} < ${view.expectedAchievement}" th:text="${view.realAchievement}+'%'"></span>
-                            </td>
-                            <td th:text="${view.comment}" class="col-sm-5"></td>
-                        </tr>
+                    <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_plan'">
+                        <td class="col-sm-4" th:text="${view.progress}"></td>
+                        <td class="col-sm-3" th:text="${view.expectedAchievement} + '%'"></td>
+                        <td class="col-sm-5" th:text="${view.comment}"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -187,7 +177,7 @@
             <span>Approve</span>
             <span>Reject</span>
         </div>
-        <a href="/report">Back to List</a>
+        <a th:href="${oldUrl}">Back to List</a>
     </div>
 </body>
 </html>

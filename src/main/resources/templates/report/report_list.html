@@ -22,55 +22,106 @@
             $("#table").DataTable({
                 searching: false,
                 order: [6,"desc"]
-            })
+            });
         });
+        // function categoryChange(s) {
+        //     var category1 = ["Notice", "Daily", "Weekly", "Monthly", "Yearly"];
+        //     var category2 = ["Waiting", "Requested", "Approved"];
+        //     var target = document.getElementById("select2")
+        //
+        //     var selected = "";
+        //     if(s.value == "type") selected=category1;
+        //     else if(s.value == "state") selected = category2;
+        //     target.options.length = 0;
+        //
+        //     for(x in selected) {
+        //         var opt = document.createElement("option");
+        //         opt.value = selected[x];
+        //         opt.innerHTML = selected[x];
+        //         target.appendChild(opt);
+        //     }
+        // }
+        //
+        // var count=1;
+        // function inputBoxChange(s) {
+        //     if(count == 1) {
+        //         var target = document.getElementById("searching");
+        //         document.getElementById('result').removeChild(target);
+        //         count--;
+        //     }
+        //     var selected = "";
+        //     if(s.value == "username") selected = "Username";
+        //     else if(s.value == "reportTitle") selected = "Report Title";
+        //     else if(s.value == "time") selected = "ex) 2020-01-01";
+        //
+        //     count++;
+        //     var tg = document.getElementById("result");
+        //     var inp = document.createElement("input");
+        //     inp.placeholder = selected;
+        //     inp.type = "text";
+        //     inp.name = "search";
+        //     inp.id = "searching";
+        //     tg.appendChild(inp);
+        //
+        //     if(s.value=="time") {
+        //         $(function() {
+        //             $("#searching").datepicker({
+        //                 dateFormat: 'yy-mm-dd'
+        //             });
+        //         });
+        //     }
+        // }
 
-        function categoryChange(s) {
-            var category1 = ["Notice", "Daily", "Weekly", "Monthly", "Yearly"];
-            var category2 = ["Waiting", "Requested", "Approved"];
-            var target = document.getElementById("select2")
+        function chooseSelected(s) {
+            var target = document.getElementById('searching2');
+            document.getElementById('result2').removeChild(target);
 
             var selected = "";
-            if(s.value == "type") selected=category1;
-            else if(s.value == "state") selected = category2;
-            target.options.length = 0;
+            if(s.value === "username") selected = "Username";
+            else if(s.value === "reportTitle") selected = "Report Title";
+            else if(s.value === "time") selected = "ex) 2020-01-01";
+            else if(s.value === "type") selected = "Type";
+            else if(s.value === "state") selected = "state";
 
-            for(x in selected) {
-                var opt = document.createElement("option");
-                opt.value = selected[x];
-                opt.innerHTML = selected[x];
-                target.appendChild(opt);
+            target = document.getElementById("result2");
+            var onetwo = "";
+            if(selected === "Type" || selected === "state") {
+                onetwo = document.createElement("select");
             }
-        }
-
-        var count=1;
-        function inputBoxChange(s) {
-            if(count == 1) {
-                var target = document.getElementById("searching");
-                document.getElementById('result').removeChild(target);
-                count--;
+            else {
+                onetwo = document.createElement("input");
+                onetwo.placeholder = selected;
+                onetwo.type="text";
             }
-            var selected = "";
-            if(s.value == "username") selected = "Username";
-            else if(s.value == "reportTitle") selected = "Report Title";
-            else if(s.value == "time") selected = "ex) 2020-01-01";
+            onetwo.name = "searching2";
+            onetwo.id = "searching2";
+            target.appendChild(onetwo);
 
-            count++;
-            var tg = document.getElementById("result");
-            var inp = document.createElement("input");
-            inp.placeholder = selected;
-            inp.type = "text";
-            inp.name = "search";
-            inp.id = "searching";
-            tg.appendChild(inp);
+            if(selected === "Type" || selected === "state") {
+                var category1 = ["Notice", "Daily", "Weekly", "Monthly", "Yearly"];
+                var category2 = ["Waiting", "Requested", "Approved"];
+                target = document.getElementById("searching2");
 
-            if(s.value=="time") {
+                var category = "";
+                if(selected === "Type") category = category1;
+                else category = category2;
+                target.options.length = 0;
+
+                for(x in category) {
+                    var opt = document.createElement("option");
+                    opt.value = category[x];
+                    opt.innerHTML = category[x];
+                    target.appendChild(opt);
+                }
+            }
+            if(s.value === "time") {
                 $(function() {
-                    $("#searching").datepicker({
+                    $("#searching2").datepicker({
                         dateFormat: 'yy-mm-dd'
                     });
                 });
             }
+            //$("#mySelect").selectpicker();
         }
     </script>
 </head>
@@ -89,22 +140,38 @@
 <!--            <span th:text="${authority.role}"></span>-->
         </div>
         <br/>
+<!--        <div>-->
+<!--            <form method="get" action="/report/search">-->
+<!--                <label>SEARCH</label>-->
+<!--                <select name="type" onchange="inputBoxChange(this)">-->
+<!--                    <option selected>Choose</option>-->
+<!--                    <option value="username">Username</option>-->
+<!--                    <option value="reportTitle">Title</option>-->
+<!--                    <option value="time">writeDate</option>-->
+<!--                </select><br/>-->
+<!--                <span id="result">-->
+<!--                    <input type="text" name="search" id="searching" placeholder="Select"/>-->
+<!--                </span>-->
+<!--                <button type="submit" class="btn btn-info">Search</button>-->
+<!--            </form>-->
+<!--        </div>-->
         <div>
             <form method="get" action="/report/search">
-                <label>SEARCH</label>
-                <select name="type" onchange="inputBoxChange(this)">
+                <label>Search</label>
+                <select name="search1" class="mr-sm-5" id="mySelect" onchange="chooseSelected(this)">
                     <option selected>Choose</option>
                     <option value="username">Username</option>
                     <option value="reportTitle">Title</option>
                     <option value="time">writeDate</option>
+                    <option value="type">Type</option>
+                    <option value="state">State</option>
                 </select><br/>
-                <span id="result">
-                    <input type="text" name="search" id="searching" placeholder="Select"/>
+                <span id="result2">
+                    <input type="text" id="searching2" placeholder="Select!"/>
                 </span>
-                <button type="submit" class="btn btn-info">Search</button>
+                <button class="btn btn-success btn-sm">Search</button>
             </form>
         </div>
-
         <div class="t-r">
             <a th:if="${authority.role} == 'ADMIN'" class="btn btn-primary" href="/report/create/notice">Notice</a>
             <div th:unless="${authority.role} == 'ADMIN'">
@@ -114,19 +181,19 @@
                 <a class="btn btn-primary" href="/report/create/project_goal">New<br/>Project Goal</a>
             </div>
         </div><br/>
-        <div class="t-l">
-            <form method="get" action="/report/sorting">
-                <select name="Big" onchange="categoryChange(this)">
-                    <option selected>Select1</option>
-                    <option value="type">Type</option>
-                    <option value="state">State</option>
-                </select>
-                <select name="Small" id="select2">
-                    <option selected>Select2</option>
-                </select>
-                <input type="submit" value="sort"/>
-            </form>
-        </div>
+<!--        <div class="t-l">-->
+<!--            <form method="get" action="/report/sorting">-->
+<!--                <select name="Big" onchange="categoryChange(this)">-->
+<!--                    <option selected>Select1</option>-->
+<!--                    <option value="type">Type</option>-->
+<!--                    <option value="state">State</option>-->
+<!--                </select>-->
+<!--                <select name="Small" id="select2">-->
+<!--                    <option selected>Select2</option>-->
+<!--                </select>-->
+<!--                <input type="submit" value="sort"/>-->
+<!--            </form>-->
+<!--        </div>-->
         <table id="table" class="table table-hover t-c">
             <thead>
                 <tr>

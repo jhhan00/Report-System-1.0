@@ -34,8 +34,17 @@ public class ReportController {
     @Autowired
     TaskRepository taskRepository;
 
+    public int LoginOrNot(Authentication authentication) {
+        log.info("auth : " + authentication);
+        if(authentication == null)  return -1;
+        else return 1;
+    }
+
     @GetMapping // report 전체보기
     public String reportList(Model model, Authentication auth) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         List<Report> list = reportRepository.findAllByOrderByUpdatedTimeDesc();
         model.addAttribute("list",list);
 
@@ -48,6 +57,9 @@ public class ReportController {
 
     @GetMapping("/search") // report 검색해서 보기
     public String reportSearch(Authentication auth, Model model, HttpServletRequest request) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
@@ -98,7 +110,8 @@ public class ReportController {
     @GetMapping("/detail/{reportId}") // report 상세보기
     public String reportView(@PathVariable("reportId") long reportid, Model model, Authentication auth,
                              HttpServletRequest request) {
-        //System.out.println(reportid + ". " + auth.getName() + " in detail");
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
 
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority",authority);
@@ -116,6 +129,9 @@ public class ReportController {
 
     @GetMapping("/create/daily")
     public String createDaily(Model model, Authentication auth, HttpServletRequest request) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
@@ -176,6 +192,9 @@ public class ReportController {
 
     @GetMapping("/create/weekly")
     public String createWeekly(Authentication auth, Model model, HttpServletRequest request) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
@@ -256,6 +275,9 @@ public class ReportController {
 
     @GetMapping("/create/monthly")
     public String createMonthly(Authentication auth, Model model, HttpServletRequest request) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
@@ -338,6 +360,9 @@ public class ReportController {
 
     @GetMapping("/create/project_goal")
     public String createProjectGoal(Authentication auth, Model model, HttpServletRequest request) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
@@ -404,6 +429,9 @@ public class ReportController {
 
     @GetMapping("/create/notice")
     public String createNotice(Authentication auth, Model model) {
+        int loginOrNot = LoginOrNot(auth);
+        if(loginOrNot == -1) return "redirect:/";
+
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 

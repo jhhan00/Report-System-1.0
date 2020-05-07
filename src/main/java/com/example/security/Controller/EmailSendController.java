@@ -24,24 +24,13 @@ import java.util.Enumeration;
 @Slf4j
 @Controller
 public class EmailSendController {
+
     @Autowired
     SimpleUserDao sud;
-
     @Autowired
-    private JavaMailSender mailSender;
-
+    JavaMailSender mailSender;
     @Autowired
-    private ReportRepository reportRepository;
-
-    private static String certNumber = "";
-
-    public String getCertNumber() {
-        return certNumber;
-    }
-
-    public void setCertNumber(String certNumber) {
-        this.certNumber = certNumber;
-    }
+    ReportRepository reportRepository;
 
     public void SendApproveOrReject(String name, String state) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -96,29 +85,31 @@ public class EmailSendController {
     public String SendEmail(@RequestParam("UserId") String id, Model model) throws MessagingException {
         System.out.println(id);
         GenerateCertNumber ge = new GenerateCertNumber();
-        certNumber = ge.executeGenerate();
-        System.out.println(certNumber);
+        String temp = ge.executeGenerate();
+        System.out.println(temp);
 
         MimeMessage message = mailSender.createMimeMessage();
         message.setSubject("회원가입 인증");
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(id));
-        message.setText("인증번호는 " + certNumber + " 입니다.");
+        message.setText("인증번호는 " + temp + " 입니다.");
         message.setSentDate(new Date());
         mailSender.send(message);
 
         model.addAttribute("UserId",id);
+        model.addAttribute("sendNumber", temp);
 
         return "signUp/cert";
     }
 
     @PostMapping("/request_check")
-    public String CheckNumber(@RequestParam("check_number") String check, @RequestParam("UserId") String id, Model model) {
-        System.out.println("certNumber : "+certNumber);
-        System.out.println("check      : "+check);
+    public String CheckNumber(@RequestParam("check_number") String check, @RequestParam("UserId") String id,
+                              @RequestParam("sendNumber")String send, Model model) {
         System.out.println(id);
+        System.out.println("sendNumber : "+send);
+        System.out.println("check      : "+check);
         String msg = "";
         boolean success = true;
-        if(check.equals(certNumber)) {
+        if(check.equals(send)) {
             System.out.println("Equal Numbers");
 
             //submit to Database

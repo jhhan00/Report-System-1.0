@@ -173,11 +173,14 @@
 <!--                <input type="submit" name="Reject" value="Reject">-->
 <!--            </form>-->
 <!--        </div>-->
+        <div th:if="${info.state} == 'Requested'" class="row p-l-15">
+            <span><strong>Already Requested</strong></span>
+        </div>
         <div th:if="${authority.role} == 'ADMIN' and ${info.state} == 'Requested'">
             <span>Approve</span>
             <span>Reject</span>
         </div>
-        <a th:href="${oldUrl}">Back to List</a>
+<!--        <a th:href="${oldUrl}">Back to List</a>-->
     </div>
 </body>
 </html>

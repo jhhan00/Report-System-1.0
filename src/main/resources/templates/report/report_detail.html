@@ -160,11 +160,11 @@
                 <input type="hidden" name="reportID" th:value="${info.reportId}"/>
                 <input type="submit" class="btn btn-dark" value="Delete"/>
             </form>
-            <form action="/report/request_state" method="get">
-                <input type="hidden" name="rId" th:value="${info.reportId}"/>
-                <input type="hidden" name="username" th:value="${info.username}"/>
-                <input type="submit" class="btn btn-info" value="Request"/>
-            </form>
+<!--            <form action="/report/request_state" method="get">-->
+<!--                <input type="hidden" name="rId" th:value="${info.reportId}"/>-->
+<!--                <input type="hidden" name="username" th:value="${info.username}"/>-->
+<!--                <input type="submit" class="btn btn-info" value="Request"/>-->
+<!--            </form>-->
         </div>
 <!--        <div th:if="${authority.role} == 'ADMIN' and ${info.state} == 'Requested'">-->
 <!--            <form method="post" action="/change_state">-->

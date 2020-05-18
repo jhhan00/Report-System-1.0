@@ -11,88 +11,69 @@
     <link rel="stylesheet" type="text/css" href="/board.css">
 
     <script>
-        var dscr_count=0;
-        var milestone_count=0;
-        function description_add() {
-            var addedform = document.getElementById('descriptions');
-            var str =
-                "<label>Project Name</label>" +
-                "<input type='text' class='form-control' name='project" + dscr_count + "' placeholder='project description" + dscr_count + "'/>" +
-                "<label>Description</label><br/>" +
-                "<textarea type='text' cols='30' placeholder='최대 6000자' name='project_description" + dscr_count + "'></textarea>";
-            var div = document.createElement('div');
-            div.id="Description" + dscr_count;
+        let pcount = 0;
+        function project_goal_add() {
+            let addedform = document.getElementById('project_goal');
+            let str =
+                "<br/><label><strong>Project Name</strong></label>" +
+                "<input type='text' class='form-control' name='project" + pcount + "' />" +
+                "<label><strong>Description</strong></label><br/>" +
+                "<textarea type='text' cols='80' placeholder='최대 2000자' name='project_description" + pcount + "'></textarea><br/>" +
+                "<label>Project Start Date</label> <input type='text' placeholder='ex)2020-01-01' name='startDate" + pcount + "'/> " +
+                "<label>Target Date</label> <input type='text' placeholder='ex)2020-01-01' name='TargetDate" + pcount + "'/><br/>" +
+                "<div><strong>Milestone</strong></div>" +
+                "<label>Quarter1</label> " +
+                "<input class='form-control' type='text' name='quarter1_" + pcount + "'/> " +
+                "<label>Quarter2</label>" +
+                "<input class='form-control' type='text' name='quarter2_" + pcount + "'/>" +
+                "<label>Quarter3</label>" +
+                "<input class='form-control' type='text' name='quarter3_" + pcount + "'/>" +
+                "<label>Quarter4</label>" +
+                "<input class='form-control' type='text' name='quarter4_" + pcount + "'/>";
+            let div = document.createElement('div');
+            div.id="ProjectGoal" + pcount;
             div.innerHTML = str;
             addedform.appendChild(div);
 
-            dscr_count++; console.log(dscr_count);
+            pcount++; console.log(pcount);
         }
-        function description_delete() {
-            console.log(dscr_count);
-            if(dscr_count > 1) {
-                var addedDiv = document.getElementById("Description" + (--dscr_count));
-                document.getElementById('descriptions').removeChild(addedDiv);
-            }
-        }
-        function milestone_add() {
-            var addedform = document.getElementById('milestones');
-            var str =
-                "<label>Milestone</label>" +
-                "<input type='text' class='form-control' name='milestone" + milestone_count + "' placeholder='milestone" + milestone_count + "'/>" +
-                "<label>Description</label><br/>" +
-                "<textarea type='text' cols='30' placeholder='최대 6000자' name='milestone_description" + milestone_count + "'></textarea>";
-            var div = document.createElement('div');
-            div.id = "Milestone" + milestone_count;
-            div.innerHTML = str;
-            addedform.appendChild(div);
-
-            milestone_count++; console.log(milestone_count);
-        }
-        function milestone_delete() {
-            console.log(milestone_count);
-            if(milestone_count > 1) {
-                var addedDiv = document.getElementById("Milestone" + (--milestone_count));
-                document.getElementById('milestones').removeChild(addedDiv);
+        function project_goal_delete() {
+            if(pcount > 1) {
+                let addedDiv = document.getElementById("ProjectGoal" + (--pcount));
+                document.getElementById('project_goal').removeChild(addedDiv);
             }
         }
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">Main</a>
-            <a class="navbar-brand" th:href="${oldUrl}">Back</a>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <div>
-<!--            <a href="/">Main</a>-->
-<!--            <a href="/report">Back</a>-->
-            <div class="t-c">
-                <span th:text="${authority.username}">username</span>, Welcome!
-<!--                <span th:text="${authority.realName}">realname</span>-->
-<!--                <span th:text="${authority.role}">role</span>-->
-            </div>
-        </div>
-        <hr/>
-        <h5>Project Goal Writing!</h5>
-        <div>
-            <form th:object="${task}" method="post" action="/report/create/project_goal">
-                <div>
-                    <label>Project Description</label>
-                    <div id="descriptions"></div>
-                    <input type="button" value="Add" onclick="description_add()"/>
-                    <input type="button" value="Delete" onclick="description_delete()"/>
-                </div><br/>
-                <div>
-                    <label>Milestones</label>
-                    <div id="milestones"></div>
-                    <input type="button" value="Add" onclick="milestone_add()"/>
-                    <input type="button" value="Delete" onclick="milestone_delete()"/>
-                </div><br/>
-                <button class="btn btn-primary" type="submit">Submit</button>
-            </form>
+        <a class="navbar-brand" href="/">Main</a>
+        <a class="navbar-brand" th:href="${oldUrl}">Back</a>
+    </div>
+</nav>
+<div class="container">
+    <div>
+        <!--            <a href="/">Main</a>-->
+        <!--            <a href="/report">Back</a>-->
+        <div class="t-c">
+            <span th:text="${authority.username}">username</span>, Welcome!
+            <!--                <span th:text="${authority.realName}">realname</span>-->
+            <!--                <span th:text="${authority.role}">role</span>-->
         </div>
     </div>
+    <hr/>
+    <h5>Project Goal Writing!</h5>
+    <div>
+        <form th:object="${task}" method="post" action="/report/create/project_goal">
+            <div>
+                <div id="project_goal"></div>
+                <input type="button" value="Add" onclick="project_goal_add()"/>
+                <input type="button" value="Delete" onclick="project_goal_delete()"/>
+            </div><br/>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

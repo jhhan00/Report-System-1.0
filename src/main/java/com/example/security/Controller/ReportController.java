@@ -45,11 +45,18 @@ public class ReportController {
         int loginOrNot = LoginOrNot(auth);
         if(loginOrNot == -1) return "redirect:/";
 
-        List<Report> list = reportRepository.findAllByOrderByUpdatedTimeDesc();
-        model.addAttribute("list",list);
-
+        List<Report> list;
         //System.out.println(auth.getName() + " in report list");
         Map<String, String> authority = rd.getUserInfo(auth.getName());
+        String role = authority.get("role");
+        if(role.equals("USER")) {
+            list = reportRepository.findByUsernameOrderByUpdatedTime(auth.getName());
+            List<Report> noticeList = reportRepository.findByReportTypeOrderByWriteDateDesc("Notice");
+            list.addAll(noticeList);
+        } else {
+            list = reportRepository.findAllByOrderByUpdatedTimeDesc();
+        }
+        model.addAttribute("list",list);
         model.addAttribute("authority", authority);
 
         return "report/report_list";
@@ -68,21 +75,51 @@ public class ReportController {
         log.info(type + " " + finding);
         List<Report> rlist = new ArrayList<>();
 
-        if(type.equals("username")) {
-            rlist = reportRepository.findByUsernameStartsWithOrderByWriteDateDesc(finding);
-        } else if(type.equals("reportTitle")) {
-            rlist = reportRepository.findByReportTitleContainingOrderByWriteDateDesc(finding);
-        } else if(type.equals("time")) {
-            List<Report> rl = reportRepository.findAllByOrderByUpdatedTimeDesc();
-            for(Report rp : rl) {
-                if(finding.equals(rp.getWriteDate().toLocalDate().toString())) {
-                    rlist.add(rp);
-                }
+        if(authority.get("role").equals("USER")) { // User인 경우
+            switch (type) {
+                case "username":
+                    rlist = reportRepository.findByUsernameStartsWithOrderByWriteDateDesc(finding);
+                    break;
+                case "reportTitle":
+                    rlist = reportRepository.findByUsernameAndReportTitleContainingOrderByWriteDate(auth.getName(), finding);
+                    break;
+                case "time":
+                    List<Report> rl = reportRepository.findByUsernameOrderByUpdatedTime(auth.getName());
+                    for(Report r : rl) {
+                        if(finding.equals(r.getWriteDate().toLocalDate().toString()))
+                            rlist.add(r);
+                    }
+                    break;
+                case "type":
+                    rlist = reportRepository.findByUsernameAndReportTypeOrderByWriteDateDesc(auth.getName(), finding);
+                    break;
+                case "state":
+                    rlist = reportRepository.findByUsernameAndStateOrderByWriteDateDesc(auth.getName(), finding);
+                    break;
             }
-        } else if (type.equals("type")) {
-            rlist = reportRepository.findByReportTypeOrderByWriteDateDesc(finding);
-        } else if (type.equals("state")) {
-            rlist = reportRepository.findByStateOrderByWriteDateDesc(finding);
+        } else { // Admin인 경우
+            switch (type) {
+                case "username":
+                    rlist = reportRepository.findByUsernameStartsWithOrderByWriteDateDesc(finding);
+                    break;
+                case "reportTitle":
+                    rlist = reportRepository.findByReportTitleContainingOrderByWriteDateDesc(finding);
+                    break;
+                case "time":
+                    List<Report> rl = reportRepository.findAllByOrderByUpdatedTimeDesc();
+                    for (Report rp : rl) {
+                        if (finding.equals(rp.getWriteDate().toLocalDate().toString())) {
+                            rlist.add(rp);
+                        }
+                    }
+                    break;
+                case "type":
+                    rlist = reportRepository.findByReportTypeOrderByWriteDateDesc(finding);
+                    break;
+                case "state":
+                    rlist = reportRepository.findByStateOrderByWriteDateDesc(finding);
+                    break;
+            }
         }
 
         model.addAttribute("list",rlist);
@@ -178,8 +215,8 @@ public class ReportController {
             //
             System.out.println(request.getParameter(key).length());
             String donedone = request.getParameter(key);
-            if(request.getParameter(key).length() >= 6000) {
-                donedone = donedone.substring(0,6000);
+            if(request.getParameter(key).length() >= 2000) {
+                donedone = donedone.substring(0,1999);
             }
             task.setDone(donedone);
             //
@@ -262,8 +299,8 @@ public class ReportController {
             //
             System.out.println(request.getParameter(key).length());
             String commentcommment = request.getParameter(key);
-            if(commentcommment.length() >= 6000)
-                commentcommment =  commentcommment.substring(0,6000);
+            if(commentcommment.length() >= 2000)
+                commentcommment =  commentcommment.substring(0,1999);
             task.setComment(commentcommment);
             //
             System.out.println(task);
@@ -290,7 +327,7 @@ public class ReportController {
             isNull = false;
         }
 
-        List<Task> tlist = null;
+        List<Task> tlist = new ArrayList<>();
         if(idx != -1) tlist = taskRepository.findByReportId(idx);
         model.addAttribute("task",tlist);
         model.addAttribute("boolValue",isNull);
@@ -337,20 +374,38 @@ public class ReportController {
                 task.setDone(request.getParameter(key));
                 key = keys.nextElement();
                 task.setRealAchievement(request.getParameter(key));
+                key = keys.nextElement();
+                task.setProjectStartDate(request.getParameter(key));
+                key = keys.nextElement();
+                task.setProjectTargetDate(request.getParameter(key));
+                key = keys.nextElement();
+                task.setProgress(request.getParameter(key));
+                key = keys.nextElement();
+                //
+                String commentComment = request.getParameter(key);
+                if(commentComment.length() >= 2000) commentComment = commentComment.substring(0,1999);
+                //
+                task.setComment(commentComment);
+                key = keys.nextElement();
+                task.setQuarter1(request.getParameter(key));
+                key = keys.nextElement();
+                task.setQuarter2(request.getParameter(key));
+                key = keys.nextElement();
+                task.setQuarter3(request.getParameter(key));
+                key = keys.nextElement();
+                task.setQuarter4(request.getParameter(key));
             } else if(loc2 == 0) {
                 task.setReportKind("Next_Month_plan");
                 task.setProgress(request.getParameter(key));
                 key = keys.nextElement();
                 task.setExpectedAchievement(request.getParameter(key));
+                key = keys.nextElement();
+                //
+                String commentComment = request.getParameter(key);
+                if(commentComment.length() >= 2000) commentComment = commentComment.substring(0,1999);
+                //
+                task.setComment(commentComment);
             }
-            key = keys.nextElement();
-            //
-            System.out.println(request.getParameter(key).length());
-            String commentcommment = request.getParameter(key);
-            if(commentcommment.length() >= 6000)
-                commentcommment =  commentcommment.substring(0,6000);
-            task.setComment(commentcommment);
-            //
             System.out.println(task);
             taskRepository.save(task);
         }
@@ -366,7 +421,7 @@ public class ReportController {
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
-        List<Task> tlist = null;
+        List<Task> tlist = new ArrayList<>();
         model.addAttribute("task",tlist);
         model.addAttribute("oldUrl", request.getHeader("referer"));
 
@@ -400,26 +455,32 @@ public class ReportController {
             String key = keys.nextElement();
             log.info(key + " : " + request.getParameter(key));
             Task task = new Task();
-            int loc1 = key.indexOf("project");
-            int loc2 = key.indexOf("milestone");
             task.setReportId(r_id);
             task.setUsername(auth.getName());
             task.setSimpleDate(nowDate);
             task.setReportType("Yearly");
-            if(loc1==0) {
-                task.setReportKind("project_description");
-            } else if(loc2==0) {
-                task.setReportKind("milestone");
-            }
+            task.setReportKind("project_goal");
             task.setProgress(request.getParameter(key));
             key = keys.nextElement();
             //
-            System.out.println(request.getParameter(key).length());
-            String commentcommment = request.getParameter(key);
-            if(commentcommment.length() >= 6000)
-                commentcommment =  commentcommment.substring(0,6000);
-            task.setComment(commentcommment);
+            String commentCommment = request.getParameter(key);
+            if(commentCommment.length() >= 2000)
+                commentCommment =  commentCommment.substring(0,1999);
+            task.setComment(commentCommment);
             //
+            key = keys.nextElement();
+            task.setProjectStartDate(request.getParameter(key));
+            key = keys.nextElement();
+            task.setProjectTargetDate(request.getParameter(key));
+            key = keys.nextElement();
+            task.setQuarter1(request.getParameter(key));
+            key = keys.nextElement();
+            task.setQuarter2(request.getParameter(key));
+            key = keys.nextElement();
+            task.setQuarter3(request.getParameter(key));
+            key = keys.nextElement();
+            task.setQuarter4(request.getParameter(key));
+
             System.out.println(task);
             taskRepository.save(task);
         }
@@ -428,15 +489,16 @@ public class ReportController {
     }
 
     @GetMapping("/create/notice")
-    public String createNotice(Authentication auth, Model model) {
+    public String createNotice(Authentication auth, Model model, HttpServletRequest request) {
         int loginOrNot = LoginOrNot(auth);
         if(loginOrNot == -1) return "redirect:/";
 
         Map<String, String> authority = rd.getUserInfo(auth.getName());
         model.addAttribute("authority", authority);
 
-        List<Task> taskList = null;
-        model.addAttribute("task",taskList);
+        List<Task> taskList = new ArrayList<>();
+        model.addAttribute("task", taskList);
+        model.addAttribute("oldUrl", request.getHeader("referer"));
 
         return "/report/create_notice";
     }

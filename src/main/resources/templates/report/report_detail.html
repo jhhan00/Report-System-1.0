@@ -13,174 +13,184 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">Main</a>
-            <a class="navbar-brand" href="/report">Report</a>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <div class="t-c">
-            <h4><span th:text="${authority.username}">username</span>, Welcome!</h4>
-<!--            <span th:text="${authority.realName}">realname</span>-->
-<!--            <span th:text="${authority.role}">role</span>-->
-        </div>
-        <hr/>
-        Report Id : <span th:text="${info.reportId}"></span>
-        <p>
-            <h5 th:text="${info.simpleDate + '_' + info.reportType}"></h5>
-            by <span th:text="${info.username}"></span>
-            <span class="text-grey" th:text="${'['+info.writeDate+']'}"></span>
-            <div th:unless="${info.writeDate} == ${info.updatedTime}">
-                last updated <span class="text-grey" th:text="${'['+info.updatedTime+']'}"></span>
-            </div>
-            <div>State : <span th:text="${info.state}"></span></div>
-        </p>
-        <div class="p-l-15">
-            <div th:if="${info.reportType} == 'Daily'">
-                <p><strong>한 일(Done)</strong></p>
-                <div th:each="view:${list}">
-                    <li th:text="${view.done}"></li>
-                </div>
-            </div>
-            <div th:if="${info.reportType} == 'Weekly'">
-                <p><strong>이번 주 성과(This Week Result)</strong></p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Done</th>
-                        <th>Achievement</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_result'">
-                        <td class="col-sm-4" th:text="${view.done}"></td>
-                        <td class="col-sm-3" th:text="${view.realAchievement} + '%'"></td>
-                        <td class="col-sm-5" th:text="${view.comment}"></td>
-                    </tr>
-                    </tbody>
-                </table><br/>
-                <p><strong>다음 주 계획(Next Week Plan)</strong></p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Progress</th>
-                        <th>Expected_Achievement</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_plan'">
-                        <td class="col-sm-4" th:text="${view.progress}"></td>
-                        <td class="col-sm-3" th:text="${view.expectedAchievement} + '%'"></td>
-                        <td class="col-sm-5" th:text="${view.comment}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div th:if="${info.reportType} == 'Monthly'">
-                <p><strong>이번 달 성과(This Month Result)</strong></p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Done</th>
-                            <th>Achievement</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="view:${list}" th:if="${view.reportKind} == 'Done'">
-                            <td th:text="${view.done}" class="col-sm-4"></td>
-                            <td th:text="${view.realAchievement} + '%'" class="col-sm-3"></td>
-                            <td th:text="${view.comment}" class="col-sm-5"></td>
-                        </tr>
-                    </tbody>
-                </table><br/>
-                <p><strong>다음 달 계획(Next Month Plan)</strong></p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Progress</th>
-                        <th>Expected_Achievement</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="view:${list}" th:if="${view.reportKind} == 'Next_Month_plan'">
-                        <td th:text="${view.progress}" class="col-sm-4"></td>
-                        <td th:text="${view.expectedAchievement} + '%'" class="col-sm-3"></td>
-                        <td th:text="${view.comment}" class="col-sm-5"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div th:if="${info.reportType} == 'Yearly'">
-                <p><strong>프로젝트 설명(Project Description)</strong></p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Project Name</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="view:${list}" th:if="${view.reportKind}=='project_description'">
-                            <td th:text="${view.progress}" class="col-sm-6"></td>
-                            <td th:text="${view.comment}" class="col-sm-6"></td>
-                        </tr>
-                    </tbody>
-                </table><br/>
-                <p><strong>마일스톤(Milestones)</strong></p>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <td>Milestone</td>
-                            <td>Description</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="view:${list}" th:if="${view.reportKind}=='milestone'">
-                            <td th:text="${view.progress}" class="col-sm-6"></td>
-                            <td th:text="${view.comment}" class="col-sm-6"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div th:if="${info.reportType} == 'Notice'">
-                <p><strong>공지(Notice)</strong></p>
-                <div th:each="view:${list}">
-                    <li th:text="${view.progress}"></li>
-                </div>
-            </div>
-        </div>
-        <br/><hr/>
-        <div th:if="${authority.username} == ${info.username} and ${info.state} == 'Waiting' or ${info.state} == 'Rejected'" class="row p-l-15">
-            <form method="post" action="/report/delete">
-                <input type="hidden" name="reportID" th:value="${info.reportId}"/>
-                <input type="submit" class="btn btn-dark" value="Delete"/>
-            </form>
-<!--            <form action="/report/request_state" method="get">-->
-<!--                <input type="hidden" name="rId" th:value="${info.reportId}"/>-->
-<!--                <input type="hidden" name="username" th:value="${info.username}"/>-->
-<!--                <input type="submit" class="btn btn-info" value="Request"/>-->
-<!--            </form>-->
-        </div>
-<!--        <div th:if="${authority.role} == 'ADMIN' and ${info.state} == 'Requested'">-->
-<!--            <form method="post" action="/change_state">-->
-<!--                <input type="hidden" th:value="${info.reportId}" name="report_id"/>-->
-<!--                <input type="submit" name="Approve" value="Approve">-->
-<!--                <input type="submit" name="Reject" value="Reject">-->
-<!--            </form>-->
-<!--        </div>-->
-        <div th:if="${info.state} == 'Requested'" class="row p-l-15">
-            <span><strong>Already Requested</strong></span>
-        </div>
-        <div th:if="${authority.role} == 'ADMIN' and ${info.state} == 'Requested'">
-            <span>Approve</span>
-            <span>Reject</span>
-        </div>
-<!--        <a th:href="${oldUrl}">Back to List</a>-->
+        <a class="navbar-brand" href="/">Main</a>
+        <a class="navbar-brand" href="/report">Report</a>
     </div>
+</nav>
+<div class="container">
+    <div class="t-c">
+        <h4><span th:text="${authority.username}">username</span>, Welcome!</h4>
+        <!--            <span th:text="${authority.realName}">realname</span>-->
+        <!--            <span th:text="${authority.role}">role</span>-->
+    </div>
+    <hr/>
+    Report Id : <span th:text="${info.reportId}"></span>
+    <p>
+    <h5 th:text="${info.reportTitle}"></h5>
+    by <span th:text="${info.username}"></span>
+    <span class="text-grey" th:text="${'['+info.writeDate+']'}"></span>
+    <div th:unless="${info.writeDate} == ${info.updatedTime}">
+        last updated <span class="text-grey" th:text="${'['+info.updatedTime+']'}"></span>
+    </div>
+    <div>State : <span th:text="${info.state}"></span></div>
+    </p>
+    <div class="p-l-15">
+        <div th:if="${info.reportType} == 'Daily'">
+            <p><strong>한 일(Daily Done)</strong></p>
+            <div th:each="view:${list}">
+                <li th:text="${view.done}"></li>
+            </div>
+        </div>
+        <div th:if="${info.reportType} == 'Weekly'">
+            <p><strong>이번 주 성과(This Week Result)</strong></p>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 20%">Project Name</th>
+                    <th>Done & Description</th>
+                    <th style="width: 10%">Achievement</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_result'">
+                    <td th:text="${view.done}"></td>
+                    <td th:text="${view.comment}"></td>
+                    <td th:text="${view.realAchievement} + '%'"></td>
+                </tr>
+                </tbody>
+            </table><br/>
+            <p><strong>다음 주 계획(Next Week Plan)</strong></p>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 20%">Progress</th>
+                    <th>Description</th>
+                    <th style="width: 10%">Expected<br/>Achievement</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="view:${list}" th:if="${view.reportKind} == 'weekly_plan'">
+                    <td th:text="${view.progress}"></td>
+                    <td th:text="${view.comment}"></td>
+                    <td th:text="${view.expectedAchievement} + '%'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${info.reportType} == 'Monthly'">
+            <p><strong>이번 달 성과(This Month Result)</strong></p>
+            <table class="table table-striped table-bordered" th:each="view:${list}" th:if="${view.reportKind} == 'Done'">
+                <tr>
+                    <td style="width: 15%">Project Title</td>
+                    <td colspan="3" th:text="${view.done}"></td>
+                </tr>
+                <tr>
+                    <td>Project Start Date</td>
+                    <td th:text="${view.projectStartDate}"></td>
+                    <td style="width: 15%">Target Date</td>
+                    <td th:text="${view.projectTargetDate}"></td>
+                </tr>
+                <tr>
+                    <td>Project Description</td>
+                    <td colspan="3" th:text="${view.comment}"></td>
+                </tr>
+                <tr>
+                    <td>Project Summary</td>
+                    <td colspan="3" th:text="${view.progress}"></td>
+                </tr>
+                <tr><td colspan="4">Milestone</td></tr>
+                <tr>
+                    <td>Q1</td>
+                    <td colspan="3" th:text="${view.quarter1}"></td>
+                </tr>
+                <tr>
+                    <td>Q2</td>
+                    <td colspan="3" th:text="${view.quarter2}"></td>
+                </tr>
+                <tr>
+                    <td>Q3</td>
+                    <td colspan="3" th:text="${view.quarter3}"></td>
+                </tr>
+                <tr>
+                    <td>Q4</td>
+                    <td colspan="3" th:text="${view.quarter4}"></td>
+                </tr>
+            </table><br/>
+            <p><strong>다음 달 계획(Next Month Plan)</strong></p>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 20%">Progress</th>
+                    <th>Description</th>
+                    <th style="width: 10%">Expected_Achievement</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="view:${list}" th:if="${view.reportKind} == 'Next_Month_plan'">
+                    <td style="width: 20%" th:text="${view.progress}"></td>
+                    <td th:text="${view.comment}"></td>
+                    <td style="width: 10%" th:text="${view.expectedAchievement} + '%'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${info.reportType} == 'Yearly'">
+            <p><strong>프로젝트 설명(Project Goal Description)</strong></p>
+            <table class="table table-striped table-bordered" th:each="view:${list}">
+                <tr>
+                    <td style="width: 15%">Project Title</td>
+                    <td colspan="3" th:text="${view.progress}"></td>
+                </tr>
+                <tr>
+                    <td>Project Description</td>
+                    <td colspan="3" th:text="${view.comment}"></td>
+                </tr>
+                <tr>
+                    <td>Project Start Date</td>
+                    <td th:text="${view.projectStartDate}"></td>
+                    <td style="width: 15%">Target Date</td>
+                    <td th:text="${view.projectTargetDate}"></td>
+                </tr>
+                <tr><td colspan="4">MileStone</td></tr>
+                <tr>
+                    <td>Quarter1</td>
+                    <td colspan="3" th:text="${view.quarter1}"></td>
+                </tr>
+                <tr>
+                    <td>Quarter2</td>
+                    <td colspan="3" th:text="${view.quarter2}"></td>
+                </tr>
+                <tr>
+                    <td>Quarter3</td>
+                    <td colspan="3" th:text="${view.quarter3}"></td>
+                </tr>
+                <tr>
+                    <td>Quarter4</td>
+                    <td colspan="3" th:text="${view.quarter4}"></td>
+                </tr>
+            </table>
+        </div>
+        <div th:if="${info.reportType} == 'Notice'">
+            <p><strong>공지(Notice)</strong></p>
+            <div th:each="view:${list}">
+                <li th:text="${view.progress}"></li>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div th:if="${authority.username} == ${info.username} and (${info.state} == 'Waiting' or ${info.state} == 'Rejected')" class="row p-l-15">
+        <form method="post" action="/report/delete">
+            <input type="hidden" name="reportID" th:value="${info.reportId}"/>
+            <input type="submit" class="btn btn-dark" value="Delete"/>
+        </form>
+<!--        <form action="/report/request_state" method="get">-->
+<!--            <input type="hidden" name="rId" th:value="${info.reportId}"/>-->
+<!--            <input type="submit" class="btn btn-info" value="Request"/>-->
+<!--        </form>-->
+    </div>
+    <!--        <a th:href="${oldUrl}">Back to List</a>-->
+</div>
 </body>
 </html>

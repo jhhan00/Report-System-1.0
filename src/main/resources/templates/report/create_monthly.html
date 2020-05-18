@@ -15,18 +15,25 @@
         var count2 = 0;
         function month_result_add(k) {
             var value = "";
-            if(k == 1) value = "month_result";
-            else if(k == 2) value = "another_result";
+            if(k === 1) value = "monthly_result";
+            else if(k === 2) value = "another_result";
             console.log(value);
 
             var addedform = document.getElementById(value);
             var str =
-                "<label>Done </label>" +
-                "<input type='text' name='done_" + value + count1 + "' />" +
-                "<label> Achievement </label>" +
-                "<input type='number' placeholder='1~100' min='1' max='100' name='achievement_" + value + count1 +"'/><br/>" +
-                "<label>Comment</label><br/>" +
-                "<textarea type='text' placeholder='최대 6000자' cols='30' name='comment_" + value + count1 + "'></textarea>";
+                "<label>Project Title </label> <input type='text' name='done_" + value + count1 + "' /> " + <!-- done으로 들어갈 부분 -->
+                "<label>Achievement </label> <input type='number' placeholder='1~100' min='1' max='100' name='achievement_" + value + count1 + "'/><br/>" +
+                "<label>Project Start Date</label> <input type='text' placeholder='ex)2020-01-01' name='startDate_" + value + count1 + "'/> " +
+                "<label>Target Date</label> <input type='text' placeholder='ex)2020-01-01' name='targetDate_" + value + count1 + "'/><br/>" +
+                "<label>Project Summary </label><br/>" +
+                "<textarea type='text' placeholder='최대 2000자' cols='80' name='summary_" + value + count1 + "'></textarea><br/>" + <!-- progress로 들어갈 부분 -->
+                "<label>Project Description </label><br/>" +
+                "<textarea type='text' placeholder='최대 2000자' cols='80' name='description_" + value + count1 + "'></textarea>" +  <!-- comment로 들어갈 부분 -->
+                "<div>MileStone</div>" +
+                "<label>Q1 </label> <input type='text' name='quarter1_" + value + count1 + "'/><br/>" +
+                "<label>Q2 </label> <input type='text' name='quarter2_" + value + count1 + "'/><br/>" +
+                "<label>Q3 </label> <input type='text' name='quarter3_" + value + count1 + "'/><br/>" +
+                "<label>Q4 </label> <input type='text' name='quarter4_" + value + count1 + "'/><br/><br/>";
             var div = document.createElement('div');
             div.id="Added_done" + count1;
             div.innerHTML = str;
@@ -36,8 +43,8 @@
         }
         function month_result_delete(k) {
             var value = "";
-            if(k == 1) value = "month_result";
-            else if(k == 2) value = "another_result";
+            if(k === 1) value = "monthly_result";
+            else if(k === 2) value = "another_result";
 
             console.log(count1);
             if(count1 > 1) {
@@ -48,12 +55,12 @@
         function next_month_add() {
             var addedform = document.getElementById('next_month');
             var str =
-                "<label>Plan</label>" +
-                "<input type='text' name='plan" + count2 + "' />" +
-                "<label>Expected Achievement</label>" +
+                "<label>Plan</label> " +
+                "<input type='text' placeholder='next_month_plan" + count2 + "' name='plan" + count2 + "' /> " +
+                "<label>Expected Achievement</label> " +
                 "<input type='number' placeholder='1~100' min='1' max='100' name='expected_achievement" + count2 + "'/><br/>" +
                 "<label>Description</label><br/>" +
-                "<textarea type='text' placeholder='최대 6000자' cols='30' name='description" + count2 + "'></textarea>";
+                "<textarea type='text' placeholder='최대 2000자' cols='80' name='description" + count2 + "'></textarea>";
             var div = document.createElement('div');
             div.id="Added_plan" + count2;
             div.innerHTML = str;
@@ -71,54 +78,61 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">Main</a>
-            <a class="navbar-brand" th:href="${oldUrl}">Back</a>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <div>
-            <div class="t-c">
-                <span th:text="${authority.username}">username</span>, Welcome!
-<!--                <span th:text="${authority.realName}">realname</span>-->
-<!--                <span th:text="${authority.role}">role</span>-->
-            </div>
+        <a class="navbar-brand" href="/">Main</a>
+        <a class="navbar-brand" th:href="${oldUrl}">Back</a>
+    </div>
+</nav>
+<div class="container">
+    <div>
+        <div class="t-c">
+            <span th:text="${authority.username}">username</span>, Welcome!
+            <!--                <span th:text="${authority.realName}">realname</span>-->
+            <!--                <span th:text="${authority.role}">role</span>-->
         </div>
-        <hr/>
-        <h5>Create Monthly</h5>
-        <div>
-            <form th:object="${task}" method="post" action="/report/create/monthly">
-                <div th:if="${boolValue} == true">
-                    <label>This Month</label>
-                    <div id="month_result"></div>
-                    <input type="button" value="Add" onclick="month_result_add(1)"/>
-                    <input type="button" value="Delete" onclick="month_result_delete(1)"/>
-                </div>
-                <div th:unless="${boolValue} == true">
-                    <div th:each="plan, i:${task}">
-                        <div th:unless="${plan.progress} == null">
-                            <label>Done</label>
-                            <input type="text" th:name="${'done'+i.index}" th:value="${plan.progress}" readonly/>
-                            <label>Achievement</label>
-                            <input type="number" placeholder="1~100" max="100" min="1" th:name="${'achievement'+i.index}"/><br/>
-                            <label>Comment</label><br/>
-                            <textarea type="text" cols="30" placeholder="최대 6000자" th:name="${'comment'+i.index}"></textarea>
-                        </div>
-                    </div>
+    </div>
+    <hr/>
+    <h5>Create Monthly</h5> <!-- 2020.05.06 대대적인 변경 : 기존 월간보고서와 안 맞아서 다 바꿈 -->
+    <div>
+        <form th:object="${task}" method="post" action="/report/create/monthly">
+            <label>This Month</label>
+            <div th:if="${boolValue} == true">
+                <div id="monthly_result"></div>
+                <input type="button" value="Add" onclick="month_result_add(1)"/>
+                <input type="button" value="Delete" onclick="month_result_delete(1)"/>
+            </div>
+            <div th:unless="${boolValue} == true">
+                <div th:each="list, i:${task}">
+                    <div>
+                        <label>Project Title</label> <input type="text" th:name="${'done_'+i.index}" th:value="${list.progress}"/>
+                        <label>Achievement </label> <input type="number" th:name="${'achievement_'+i.index}" placeholder="1~100" min="1" max="100" th:value="${list.expectedAchievement}"/><br/>
+                        <label>Project Start Date</label> <input type="text" th:name="${'startDate_'+i.index}" placeholder="ex)2020-01-01"/>
+                        <label>Target Date</label> <input type="text" th:name="${'targetDate_'+i.index}" placeholder="ex)2020-01-01"/><br/>
+                        <label>Project Summary</label><br/>
+                        <textarea type="text" placeholder="최대 2000자" cols="80" th:name="${'summary_'+i.index}"></textarea><br/>
+                        <label>Project Description</label><br/>
+                        <textarea type="text" placeholder="최대 2000자" cols="80" th:name="${'description_'+i.index}"></textarea>
+                        <div>MileStone</div>
+                        <label>Q1 </label> <input type="text" th:name="${'quarter1_'+i.index}"/><br/>
+                        <label>Q2 </label> <input type="text" th:name="${'quarter2_'+i.index}"/><br/>
+                        <label>Q3 </label> <input type="text" th:name="${'quarter3_'+i.index}"/><br/>
+                        <label>Q4 </label> <input type="text" th:name="${'quarter4_'+i.index}"/><br/>
+                    </div><br/>
                     <div id="another_result"></div>
                     <input type="button" value="Add" onclick="month_result_add(2)"/>
                     <input type="button" value="Delete" onclick="month_result_delete(2)"/>
-                </div><br/>
-                <div>
-                    <label>Next Month</label>
-                    <div id="next_month"></div>
-                    <input type="button" value="Add" onclick="next_month_add()"/>
-                    <input type="button" value="Delete" onclick="next_month_delete()"/>
-                </div><br/>
-                <button class="btn btn-primary" type="submit">Submit</button>
-            </form>
-        </div>
+                </div>
+            </div><br/>
+            <div>
+                <label>Next Month</label>
+                <div id="next_month"></div>
+                <input type="button" value="Add" onclick="next_month_add()"/>
+                <input type="button" value="Delete" onclick="next_month_delete()"/>
+            </div><br/>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
     </div>
+</div>
 </body>
 </html>

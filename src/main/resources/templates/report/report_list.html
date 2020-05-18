@@ -20,10 +20,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#table").DataTable({
+                lengthMenu: [10,20,40,80],
                 searching: false,
                 order: [6,"desc"]
-            });
+            })
         });
+
         // function categoryChange(s) {
         //     var category1 = ["Notice", "Daily", "Weekly", "Monthly", "Yearly"];
         //     var category2 = ["Waiting", "Requested", "Approved"];
@@ -71,7 +73,6 @@
         //         });
         //     }
         // }
-
         function chooseSelected(s) {
             var target = document.getElementById('searching2');
             document.getElementById('result2').removeChild(target);
@@ -121,104 +122,89 @@
                     });
                 });
             }
-            //$("#mySelect").selectpicker();
         }
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">Main</a>
-            <a class="navbar-brand" href="/report">Report</a>
-            <a class="navbar-brand" href="logout">LOG-OUT</a>
-        </div>
-    </nav>
-    <div class="container" style="padding: 10px">
-        <div class="t-c">
-            <h4><span th:text="${authority.realName}"></span> 님, Welcome!</h4>
-<!--            <br/><span th:text="${authority.realName}"></span>-->
-<!--            <span th:text="${authority.role}"></span>-->
-        </div>
-        <br/>
-<!--        <div>-->
-<!--            <form method="get" action="/report/search">-->
-<!--                <label>SEARCH</label>-->
-<!--                <select name="type" onchange="inputBoxChange(this)">-->
-<!--                    <option selected>Choose</option>-->
-<!--                    <option value="username">Username</option>-->
-<!--                    <option value="reportTitle">Title</option>-->
-<!--                    <option value="time">writeDate</option>-->
-<!--                </select><br/>-->
-<!--                <span id="result">-->
-<!--                    <input type="text" name="search" id="searching" placeholder="Select"/>-->
-<!--                </span>-->
-<!--                <button type="submit" class="btn btn-info">Search</button>-->
-<!--            </form>-->
-<!--        </div>-->
-        <div>
-            <form method="get" action="/report/search">
-                <label>Search</label>
-                <select name="search1" class="mr-sm-5" id="mySelect" onchange="chooseSelected(this)">
-                    <option selected>Choose</option>
-                    <option value="username">Username</option>
-                    <option value="reportTitle">Title</option>
-                    <option value="time">writeDate</option>
-                    <option value="type">Type</option>
-                    <option value="state">State</option>
-                </select><br/>
-                <span id="result2">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">Main</a>
+        <a class="navbar-brand" href="/report">Report</a>
+        <a class="navbar-brand" href="logout">LOG-OUT</a>
+    </div>
+</nav>
+<div class="container" style="padding: 10px">
+    <div class="t-c">
+        <h4><span th:text="${authority.realName}"></span> 님, Welcome!</h4>
+        <!--            <span th:text="${authority.role}"></span>-->
+    </div>
+    <br/>
+    <div>
+        <form method="get" action="/report/search">
+            <label>SEARCH</label>
+            <!--                <select name="type" onchange="inputBoxChange(this)">-->
+            <select name="search1" class="mr-sm-5" id="mySelect" onchange="chooseSelected(this)">
+                <option selected>Choose</option>
+                <option value="username">Username</option>
+                <option value="reportTitle">Title</option>
+                <option value="time">writeDate</option>
+                <option value="type">Type</option>
+                <option value="state">Status</option>
+            </select><br/>
+            <span id="result2">
                     <input type="text" id="searching2" placeholder="Select!"/>
                 </span>
-                <button class="btn btn-success btn-sm">Search</button>
-            </form>
-        </div>
-        <div class="t-r">
-            <a th:if="${authority.role} == 'ADMIN'" class="btn btn-primary" href="/report/create/notice">Notice</a>
-            <div th:unless="${authority.role} == 'ADMIN'">
-                <a class="btn btn-primary" href="/report/create/daily">New<br/>Daily</a>
-                <a class="btn btn-primary" href="/report/create/weekly">New<br/>Weekly</a>
-                <a class="btn btn-primary" href="/report/create/monthly">New<br/>Monthly</a>
-                <a class="btn btn-primary" href="/report/create/project_goal">New<br/>Project Goal</a>
-            </div>
-        </div><br/>
-<!--        <div class="t-l">-->
-<!--            <form method="get" action="/report/sorting">-->
-<!--                <select name="Big" onchange="categoryChange(this)">-->
-<!--                    <option selected>Select1</option>-->
-<!--                    <option value="type">Type</option>-->
-<!--                    <option value="state">State</option>-->
-<!--                </select>-->
-<!--                <select name="Small" id="select2">-->
-<!--                    <option selected>Select2</option>-->
-<!--                </select>-->
-<!--                <input type="submit" value="sort"/>-->
-<!--            </form>-->
-<!--        </div>-->
-        <table id="table" class="table table-hover t-c">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>type</th>
-                    <th>state</th>
-                    <th>title</th>
-                    <th>UserName</th>
-                    <th>Create_Date</th>
-                    <th>Last_Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="report:${list}">
-                    <td th:text="${report.reportId}"></td>
-                    <td th:if="${report.reportType} == 'Notice'" th:text="${report.reportType}" class="text-blue"></td>
-                    <td th:unless="${report.reportType} == 'Notice'" th:text="${report.reportType}"></td>
-                    <td th:text="${report.state}"></td>
-                    <td><a th:href="${'/report/detail/' + report.reportId}" th:text="${report.reportTitle}"></a></td>
-                    <td th:text="${report.username}"></td>
-                    <td th:text="${#temporals.format(report.writeDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:text="${#temporals.format(report.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                </tr>
-            </tbody>
-        </table>
+            <button class="btn btn-success btn-sm">Search</button>
+        </form>
     </div>
+
+    <div class="t-r">
+        <a th:if="${authority.role} == 'ADMIN'" class="btn btn-primary" href="/report/create/notice">Notice</a>
+        <div th:unless="${authority.role} == 'ADMIN'">
+            <a class="btn btn-primary" href="/report/create/daily">New<br/>Daily</a>
+            <a class="btn btn-primary" href="/report/create/weekly">New<br/>Weekly</a>
+            <a class="btn btn-primary" href="/report/create/monthly">New<br/>Monthly</a>
+            <a class="btn btn-primary" href="/report/create/project_goal">New<br/>Project Goal</a>
+        </div>
+    </div><br/>
+    <!--        <div class="t-l">-->
+    <!--            <form method="get" action="/report/sorting">-->
+    <!--                <select name="Big" onchange="categoryChange(this)">-->
+    <!--                    <option selected>Select1</option>-->
+    <!--                    <option value="type">Type</option>-->
+    <!--                    <option value="state">State</option>-->
+    <!--                </select>-->
+    <!--                <select name="Small" id="select2">-->
+    <!--                    <option selected>Select2</option>-->
+    <!--                </select>-->
+    <!--                <input type="submit" value="sort"/>-->
+    <!--            </form>-->
+    <!--        </div>-->
+    <table id="table" class="table table-hover t-c">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>type</th>
+            <th>status</th>
+            <th>title</th>
+            <th>UserName</th>
+            <th>Create_Date</th>
+            <th>Last_Update</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="report:${list}">
+            <td th:text="${report.reportId}"></td>
+            <td th:if="${report.reportType} == 'Notice'" th:text="${report.reportType}" class="text-blue"></td>
+            <td th:unless="${report.reportType} == 'Notice'" th:text="${report.reportType}"></td>
+            <td th:text="${report.state}"></td>
+            <td><a th:href="${'/report/detail/' + report.reportId}" th:text="${report.reportTitle}"></a></td>
+            <td th:text="${report.username}"></td>
+            <td th:text="${#temporals.format(report.writeDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(report.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
